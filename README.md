@@ -1,6 +1,6 @@
 # ApplyTrack
 
-A simple command-line tool to track job and internship applications — built in pure Python, no external libraries.
+A command-line tool to track job and internship applications — built in Python, backed by a real MySQL database.
 
 ## Why I built this
 
@@ -12,31 +12,54 @@ Job hunting means applying to many companies and losing track of who replied, wh
 - **View** all saved applications
 - **Update** the status of any application (e.g. applied → interview → rejected)
 - **Filter** applications by status
-- **Persistent storage** — your data is saved to a file and automatically reloaded the next time you run the program
-- **Input validation** — the program won't let you save empty/blank entries
+- **Delete** an application
+- **MySQL database** for persistent, reliable storage — no data lost between runs
+- **Input validation** — the program won't let you save empty/blank entries, and matching is case- and whitespace-insensitive (e.g. "Google" and "  google " are treated the same)
 
 ## How to run it
 
-1. Make sure you have Python 3 installed
+1. Make sure you have Python 3 and MySQL installed and running
 2. Clone this repository
-3. Run the file:
+3. Create the database and table:
+   ```sql
+   CREATE DATABASE applytrack;
+   USE applytrack;
+
+   CREATE TABLE jobs (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       company VARCHAR(100),
+       role VARCHAR(100),
+       status VARCHAR(50)
+   );
+   ```
+4. Install dependencies:
+   ```
+   pip install mysql-connector-python python-dotenv
+   ```
+5. Create a `.env` file in the project folder (see `.env.example`) and add your MySQL password:
+   ```
+   DB_PASSWORD=your_mysql_password_here
+   ```
+6. Run the file:
    ```
    python applytrack.py
    ```
-4. Follow the on-screen menu to add, view, update, or filter your applications
+7. Follow the on-screen menu to add, view, update, filter, or delete your applications
 
 ## What I learned building this
 
 - Working with Python data structures (lists and dictionaries) to model real data
 - Writing modular code using functions
 - File handling — reading from and writing to files so data persists between runs
-- Basic input validation and loop control (`while` loops, flags)
+- SQL fundamentals — `INSERT`, `SELECT`, `UPDATE`, `DELETE`, and using `WHERE` to target specific rows
+- Connecting a Python program to a real MySQL database using `mysql-connector-python`
+- Keeping sensitive data (like database passwords) out of source code using environment variables
+- Basic input validation and loop control (`while` loops)
 
 ## Possible future improvements
 
-- Switch data storage to JSON for more reliable structure
 - Add a "response rate" statistic
-- Add the ability to delete an application
+- Build a simple web interface using Flask
 
 ---
 
